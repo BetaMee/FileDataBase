@@ -101,3 +101,7 @@ First clone this repo:
 And then run cli:
 
 `npm run dev`
+
+If you want to build lib:
+
+`npm run build`
