@@ -1,0 +1,5 @@
+# 发布 NPM 包需要忽略的文件
+src
+tsconfig.json
+tslint.json
+nodemon.json
