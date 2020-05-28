@@ -5,6 +5,7 @@ const readDir = fs.promises.readdir
 const writeFile = fs.promises.writeFile
 const readFile = fs.promises.readFile
 const mkdir = fs.promises.mkdir
+const unlink = fs.promises.unlink
 const fsStat  = (path: string) => new Promise<false | fs.Stats>((resolve) => {
     fs.stat(path, (err, stat) => {
         if (err) {
@@ -24,5 +25,6 @@ export {
     readFile,
     statFile,
     statDir,
-    mkdir
+    mkdir,
+    unlink
 }

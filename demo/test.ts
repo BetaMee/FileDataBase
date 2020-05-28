@@ -26,7 +26,7 @@ const Start = async () => {
         // 指定一个文件作为当前数据存储地址
         // 进行加载，获取 fm 对象
         const fm = await fdb
-            .index<IFMType>('mydatafile.json')
+            .index<IFMType>('file')
             .default(initData)
             .load()
 
@@ -37,7 +37,7 @@ const Start = async () => {
         console.log(a, e, d) // hello undefined world
 
         // Set value(Async func)
-        await fm.set('f', 'Good!').write()
+        await fm.set('f', 'Good!').save()
         const f = fm.get('f').value()
         console.log(f) // Good!
 

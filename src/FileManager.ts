@@ -73,6 +73,7 @@ export default class FileManager<T> {
                 const data = JSON.parse(file) as IFMDefaultData<T>
                 this.setState(data)
             } else {
+                // 需要新建文件
                 await writeFile(path.resolve(this.fdbName, this.fileName), JSON.stringify(this.defaultFileState))
                 this.setState(this.defaultFileState)
             }
@@ -81,7 +82,8 @@ export default class FileManager<T> {
             return Promise.reject(new Error(GlobalErrorType.FM_ERROR_LOADFAIL))
         }
     }
-    async write() {
+    // 保存当前状态
+    async save() {
         try {
             // 获取当前状态
             const state = this.getState()

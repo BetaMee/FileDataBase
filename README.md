@@ -39,7 +39,7 @@ const Start = async () => {
         // 指定一个文件作为当前数据存储地址
         // 进行加载，获取 fm 对象
         const fm = await fdb
-            .index<IFMType>('mydatafile.json')
+            .index<IFMType>('file')
             .default(initData)
             .load()
 
@@ -50,7 +50,7 @@ const Start = async () => {
         console.log(a, e, d) // hello undefined world
 
         // Set value(Async func)
-        await fm.set('f', 'Good!').write()
+        await fm.set('f', 'Good!').save()
         const f = fm.get('f').value()
         console.log(f) // Good!
 
@@ -66,17 +66,19 @@ Start()
 
 ```ts
 // FDB Object
+const fileDataBase = new FDB(dbpathstring)
+const fdb = await fileDataBase.init()
+
+// FM Object
 const fm = await fdb
     // Select which file you need to use
     // IFMType is your data interface
-    .index<IFMType>('mydatafile.json')
+    .index<IFMType>('mydatafile')
     // Default data if your JSON file empty
     .default(initData)
     // load from dist
     .load()
 
-
-// FM Object
 // Get
 fm.get(key: string).value()
 fm.get(keyLsit: (string | number)[]).value()
@@ -89,7 +91,7 @@ fm.setIn(keyLsit: (string | number)[], value: any).
 fm.set(key: string, value: any).get(key: string)
 
 // Write
-await fm.write()
+await fm.save()
 ```
 
 ## Example & Debug

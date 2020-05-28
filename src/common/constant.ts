@@ -3,6 +3,7 @@
  */
  export const GlobalErrorType = {
     FDB_ERROR_INITFAIL: '数据库加载失败',
+    FDB_ERROR_REMOVEFILE: '数据库删除文件失败',
 
     FM_ERROR_NOTLOADEDDATA: '文件数据尚未加载',
     FM_ERROR_LOADFAIL: '文件数据加载失败',
