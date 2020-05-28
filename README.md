@@ -1,5 +1,9 @@
 ## FDB: A JSON File DataBase for Node.js
 
+[![npm](http://img.shields.io/npm/dm/@gongxq/fdb.svg?style=flat)](https://www.npmjs.org/package/@gongxq/fdb)
+
+[![npm](https://img.shields.io/npm/v/@gongxq/fdb.svg)](https://www.npmjs.org/package/@gongxq/fdb)
+
 This lib can be used for Node.js application, like electron or anything you want yo store your data in dist JSON files.
 
 It uses Node.js file modules to interact with dist files, and uses immutable.js as inner state, so there is no need to worry about JavaScript object reference and inadvertently change to your data, everything in the FDB is immutable. Only call specific API that can update dist files.
