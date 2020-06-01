@@ -71,11 +71,11 @@ export default class FileManager<T> {
             if (fileStatus && fileStatus.isFile())  {
                 const file = await readFile(path.resolve(this.fdbName, this.fileName), 'utf-8')
                 const data = JSON.parse(file) as IFMDefaultData<T>
-                this.setState(data)
+                this.setRawState(data)
             } else {
                 // 需要新建文件
                 await writeFile(path.resolve(this.fdbName, this.fileName), JSON.stringify(this.defaultFileState))
-                this.setState(this.defaultFileState)
+                this.setRawState(this.defaultFileState)
             }
             return this
         } catch(e) {
@@ -86,7 +86,7 @@ export default class FileManager<T> {
     async save() {
         try {
             // 获取当前状态
-            const state = this.getState()
+            const state = this.getRawState()
             if (state) {
                 // 更新时间
                 state._fmUpdated = this._updateFMTime()
@@ -102,8 +102,16 @@ export default class FileManager<T> {
             return Promise.reject(new Error(GlobalErrorType.FM_ERROR_WRITEFAIL))
         }
     }
-    //  获取所有值
+    // 只获取存储数据
     getState() {
+        if (Map.isMap(this.fileState)) {
+            return this.fileState.get('_fmData').toJS() as T
+        } else {
+            return null
+        }
+    }
+    //  获取所有值
+    getRawState() {
         if (Map.isMap(this.fileState)) {
             return this.fileState.toJS() as IFMDefaultData<T>
         } else {
@@ -111,7 +119,7 @@ export default class FileManager<T> {
         }
     }
     // 更新所有值
-    setState(newState: IFMDefaultData<T> | IFMState) {
+    setRawState(newState: IFMDefaultData<T> | IFMState) {
         if (Map.isMap(newState)) {
             this.fileState = newState
         } else if (newState && !Map.isMap(newState)) {
@@ -156,7 +164,7 @@ export default class FileManager<T> {
             let newfileState = null
             if (Map.isMap(_fmData)) {
                 newfileState = setIn(this.fileState, ['_fmData', key], fromJS(value))
-                this.setState(newfileState)
+                this.setRawState(newfileState)
                 this.fileValue = newfileState
             }
         }
@@ -167,7 +175,7 @@ export default class FileManager<T> {
             throw new Error(GlobalErrorType.FM_ERROR_SETIN_FORRBIDDEN)
         } else {
             const newfileState = setIn(this.fileState, ['_fmData', ...keyList], fromJS(value))
-            this.setState(newfileState)
+            this.setRawState(newfileState)
         }
         return this
     }

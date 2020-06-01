@@ -1,6 +1,6 @@
 {
   "name": "@gongxq/fdb",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "keywords": ["database", "JSON", "electron", "file", "immutable"],
   "description": "A JSON File DataBase for Node.js",
   "license": "MIT",

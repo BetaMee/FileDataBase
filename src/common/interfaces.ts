@@ -1,15 +1,5 @@
 import { Map } from 'immutable'
 
-/**
- * FBD Manifest 接口
- */
- export interface IFDBManifest {
-    _fdbVersion: string,
-    _fdbName: string,
-    _fdbPath: string,
-    _fdbFileList: string[]
-}
-
 export interface IFMDefaultData<T> {
     _fmName: string,
     _fmPath: string,

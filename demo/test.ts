@@ -22,7 +22,7 @@ const Start = async () => {
             }
         }
         // 连接数据库
-        const fdb = await fileDataBase.init()
+        const fdb = fileDataBase.initSync()
         // 指定一个文件作为当前数据存储地址
         // 进行加载，获取 fm 对象
         const fm = await fdb

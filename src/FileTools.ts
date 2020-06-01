@@ -2,6 +2,7 @@ import fs from 'fs'
 
 // 文件读写工具
 const readDir = fs.promises.readdir
+const readDirSync = fs.readdirSync
 const writeFile = fs.promises.writeFile
 const readFile = fs.promises.readFile
 const mkdir = fs.promises.mkdir
@@ -19,12 +20,18 @@ const fsStat  = (path: string) => new Promise<false | fs.Stats>((resolve) => {
 const statDir = fsStat
 const statFile = fsStat
 
+const statDirSync = fs.statSync
+const mkdirSync = fs.mkdirSync
+
 export {
     readDir,
+    readDirSync,
     writeFile,
     readFile,
     statFile,
+    statDirSync,
     statDir,
     mkdir,
+    mkdirSync,
     unlink
 }

@@ -1,15 +1,12 @@
 import FileManager from './FileManager'
 
 import {
-    IFDBManifest
-} from './common/interfaces'
-
-import {
     readDir,
-    writeFile,
-    readFile,
+    readDirSync,
     statDir,
+    statDirSync,
     mkdir,
+    mkdirSync,
     unlink
 } from './FileTools'
 
@@ -33,7 +30,18 @@ export default class FileDataBase {
     async _laodFileList () {
         // 读取文件夹
         const fdbDirs = await readDir(this.fdbPath)
-        fdbDirs.forEach(fileName => {
+        fdbDirs
+            .filter(fileName => fileName !== '.DS_Store')
+            .forEach(fileName => {
+            this.fdbFileList[fileName] = new FileManager<any>(this.fdbPath, fileName)
+        })
+    }
+    _laodFileListSync () {
+        // 读取文件夹
+        const fdbDirs =  readDirSync(this.fdbPath)
+        fdbDirs
+            .filter(fileName => fileName !== '.DS_Store')
+            .forEach(fileName => {
             this.fdbFileList[fileName] = new FileManager<any>(this.fdbPath, fileName)
         })
     }
@@ -53,6 +61,34 @@ export default class FileDataBase {
         } catch(e) {
             return Promise.reject(new Error(GlobalErrorType.FDB_ERROR_INITFAIL))
         }
+    }
+    initSync() {
+        try {
+            // 判断是否有文件夹
+            const dirStat = statDirSync(this.fdbPath)
+            if (dirStat && dirStat.isDirectory()) {
+                this._laodFileListSync()
+            } else {
+                // 新建文件夹
+                mkdirSync(this.fdbPath)
+                this._laodFileListSync()
+            }
+            return this
+        } catch(e) {
+            throw new Error(GlobalErrorType.FDB_ERROR_INITFAIL)
+        }
+    }
+    // 获取所有的文件数据
+    async all<U>() {
+        const promisedFileList: Promise<FileManager<U>>[] = []
+        for (const fileName in this.fdbFileList) {
+            if (fileName) {
+                promisedFileList.push(this.fdbFileList[fileName].load())
+            }
+        }
+        const fileData = await Promise.all(promisedFileList)
+
+        return fileData.map(d => d.getRawState())
     }
     // 选中哪一个文件数据库
     index<T>(name: string): FileManager<T> {
